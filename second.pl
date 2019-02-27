@@ -2,6 +2,7 @@
 :-dynamic object/1.
 :-dynamic interest/3.
 :-dynamic writing_flag/1.
+:-dynamic not_reading_flag/1.
 
 /*субъекты -- если остаток от деления на 3 у числа равен 1*/
 
@@ -59,7 +60,7 @@ try_access(S, O, R):-
 										R == r, 
 										write("conflict of interest: "), 
 										write(S), write(" have "), write(_si), write(" #"), write(_sn), write(" as well as "), 
-										write(O), write(" have "), write(_oi), write(" #"), write(_on), nl
+										write(O), write(" have "), write(_oi), write(" #"), write(_on), nl, assert(not_reading_flag(t))
 									);
 									(
 										R = w,
@@ -87,15 +88,20 @@ try_access(S, O, R):-
 	);
 
 	(
-		R == r, 
+
+		not(not_reading_flag(t)),
 		(
-			forall(interest(O, _oi, _on),
-				(
-					assert(interest(S, _oi, _on))
+			R == r,
+			(
+				forall(interest(O, _oi, _on),
+					(
+						assert(interest(S, _oi, _on))
+					)
 				)
-			)
-		),
-		write("Reading done")
+			),
+			write("Reading done")
+		);
+		retract(not_reading_flag(t))
 	);
 
 	R == w, not(interest(O, _, _)), write("Can not write to public objects").
