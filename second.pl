@@ -78,7 +78,7 @@ try_access(S, O, R):-
 				)
 			)
 		)
-	);
+	); 
 
 	(
 		writing_flag(t), 
@@ -95,7 +95,7 @@ try_access(S, O, R):-
 			(
 				forall(interest(O, _oi, _on),
 					(
-						assert(interest(S, _oi, _on))
+						not(interest(S, _oi, _on)), assert(interest(S, _oi, _on)); true
 					)
 				)
 			),
