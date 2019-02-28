@@ -98,7 +98,7 @@ try_access(S, O, R):-
 			(
 				forall(interest(O, _oi, _on),
 					(
-						not(interest(S, _oi, _on)), assert(interest(S, _oi, _on)); true
+						(not(interest(S, _oi, _on)), assert(interest(S, _oi, _on))); true
 					)
 				)
 			),
