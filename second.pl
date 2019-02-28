@@ -115,6 +115,19 @@ try_access(S, O, R):-
 
 
 
+create_s(S1, S2):-
+	not(subject(S1)), write("there is no subject "), write(S1);
+	subject(S2), write("there is subject "), write(S2), write(" already");
+	assert(subject(S2)),
+	(
+		forall( interest(S1, _i, _n), 
+			(
+				assert(interest(S2, _i, _n))
+			)
+		)
+	).
+
+
 print_matrix:-
 	forall(interest(_o, _i, _n), 
 		(
