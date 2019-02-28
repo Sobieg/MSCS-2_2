@@ -3,7 +3,7 @@
 :-dynamic interest/3.
 :-dynamic writing_flag/1.
 :-dynamic not_reading_flag/1.
-:-dynamic not_writing_flag/1.
+:-dynamic not_writing_flag/2.
 
 /*субъекты -- если остаток от деления на 3 у числа равен 1*/
 
@@ -70,17 +70,18 @@ try_access(S, O, R):-
 											(
 												R == w,
 												write("Can not write to object with same interest, but other company"), nl, 
-												writing_flag(t), retract(writing_flag(t)), assert(not_writing_flag(t))
-											), false
+												assert(not_writing_flag(S, O)), writing_flag(t), retract(writing_flag(t))
+											); true
 										)
 								);
 
 								(
-									not(not_writing_flag(t)), assert(writing_flag(t))
+									(R == w, not(not_writing_flag(S, O)), assert(writing_flag(t))), false
 								)
 							)
 						)
 					)
+
 				)
 			)
 		)
