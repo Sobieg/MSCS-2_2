@@ -47,33 +47,36 @@ try_access(S, O, R):-
 
 
 	( %% если нет вообще пересечения интересов
-		forall(interest(S, _si, _sn), %% для всех компаний (_sn) во всех сферах интересов (_si) субъекта S
-			(
-				forall(interest(O, _oi, _on), %%  взять все компании (_on) во всех сферах интересов (_oi) объекта O
-					(
+		interest(S, _, _), 
+		(
+			forall(interest(S, _si, _sn), %% для всех компаний (_sn) во всех сферах интересов (_si) субъекта S
+				(
+					forall(interest(O, _oi, _on), %%  взять все компании (_on) во всех сферах интересов (_oi) объекта O
 						(
-							_si == _oi, not(_sn == _on), 
+							(
+								_si == _oi, not(_sn == _on), 
+
+									(
+
+										(
+											R == r, 
+											write("conflict of interest: "), 
+											write(S), write(" have "), write(_si), write(" #"), write(_sn), write(" as well as "), 
+											write(O), write(" have "), write(_oi), write(" #"), write(_on), nl, assert(not_reading_flag(t))
+										);
+										(
+											R = w,
+											not(writing_flag(t)), assert(writing_flag(t))
+										), false
+									)
+							);
 
 								(
+									R = w,
+									not(writing_flag(t)), assert(writing_flag(t))
+								), false
 
-									(
-										R == r, 
-										write("conflict of interest: "), 
-										write(S), write(" have "), write(_si), write(" #"), write(_sn), write(" as well as "), 
-										write(O), write(" have "), write(_oi), write(" #"), write(_on), nl, assert(not_reading_flag(t))
-									);
-									(
-										R = w,
-										not(writing_flag(t)), assert(writing_flag(t))
-									), false
-								)
-						);
-
-							(
-								R = w,
-								not(writing_flag(t)), assert(writing_flag(t))
-							), false
-
+						)
 					)
 				)
 			)
